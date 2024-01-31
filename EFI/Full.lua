@@ -161,6 +161,10 @@ function(statusText, needWait)
 	local y = drawTitle(#lines, stringsMineOSEFI)
 	
 	for i = 1, #lines do
+		local rep = {
+			["no such component"] = [0x00000001,"NO_SUCH_COMPONENT"],
+			["not enough memory"] = [0x00000002,"OUT_OF_MEMORY"]
+		}
 		drawCentrizedText(y, colorsText, lines[i])
 		y = y + 1
 	end
