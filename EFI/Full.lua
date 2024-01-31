@@ -159,8 +159,8 @@ function(statusText, needWait)
 	end
 	
 	local errs = {
-		["no such component"] = [0x00000001,"NO_SUCH_COMPONENT"],
-		["not enough memory"] = [0x00000002,"OUT_OF_MEMORY"]
+		["no such component"] = {0x00000001,"NO_SUCH_COMPONENT"},
+		["not enough memory"] = {0x00000002,"OUT_OF_MEMORY"}
 	}
 	local iserr = false
 	for i = 1, #lines do
