@@ -158,17 +158,36 @@ function(statusText, needWait)
 		lines[#lines + 1] = line:gsub("\t", "  ")
 	end
 	
-	local y = drawTitle(#lines, stringsMineOSEFI)
-	
+	local errs = {
+		["no such component"] = [0x00000001,"NO_SUCH_COMPONENT"],
+		["not enough memory"] = [0x00000002,"OUT_OF_MEMORY"]
+	}
+	local iserr = false
 	for i = 1, #lines do
-		local rep = {
-			["no such component"] = [0x00000001,"NO_SUCH_COMPONENT"],
-			["not enough memory"] = [0x00000002,"OUT_OF_MEMORY"]
-		}
-		drawCentrizedText(y, colorsText, lines[i])
-		y = y + 1
+		for i, v in pairs(errs) do
+			if string.find(lines[i],v[2]) then
+				iserr = true
+				break
+			end
+		end
+		if iserr then break end
 	end
-
+	if iserr then
+		gpuSetBackground(0x0004ff)
+		local y = drawTitle(#lines, "An error has occurred")
+		for i = 1, #lines do
+			
+			drawCentrizedText(y, 0xffffff, lines[i])
+			y = y + 1
+		end
+	else
+		local y = drawTitle(#lines, stringsMineOSEFI)
+		for i = 1, #lines do
+			
+			drawCentrizedText(y, colorsText, lines[i])
+			y = y + 1
+		end
+	end
 	if needWait then
 		while pullSignal() ~= stringsKeyDown do
 
