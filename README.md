@@ -1,3 +1,6 @@
+> [!WARNING]
+> This version of MineOS requires more than the default 4096B EEPROM size. I recommend 16384B (16KiB) of EEPROM size.
+
 ![](https://i.imgur.com/Ki5bX0I.gif)
 
 English | [中文(简体)](https://github.com/IgorTimofeev/MineOS/blob/master/README-zh_CN.md) | [Русский](https://github.com/IgorTimofeev/MineOS/blob/master/README-ru_RU.md)
