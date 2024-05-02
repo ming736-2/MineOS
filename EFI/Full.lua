@@ -164,36 +164,36 @@ function(statusText, needWait)
 	}
 	local iserr = false
 	for i = 1, #lines do
-		for i, v in pairs(errs) do
-			if string.find(lines[i],v[2]) then
+		for key, value in pairs(errs) do
+			if string.find(lines[i], value[2]) then
 				iserr = true
 				break
 			end
 		end
-		if iserr then break end
-	end
-	if iserr then
-		gpuSetBackground(0x0004ff)
-		local y = drawTitle(#lines, "An error has occurred")
-		for i = 1, #lines do
-			
-			drawCentrizedText(y, 0xffffff, lines[i])
-			y = y + 1
-		end
-	else
-		local y = drawTitle(#lines, stringsMineOSEFI)
-		for i = 1, #lines do
-			
-			drawCentrizedText(y, colorsText, lines[i])
-			y = y + 1
+		if iserr then 
+			gpuSetBackground(0x0004ff)
+			local y = drawTitle(#lines, "An error has occurred")
+			for j = 1, #lines do
+				drawCentrizedText(y, 0xffffff, lines[j])
+				y = y + 1
+			end
+			return  -- Exit the function immediately after handling error
 		end
 	end
+
+	-- If no error is detected, proceed with normal display
+	local y = drawTitle(#lines, stringsMineOSEFI)
+	for i = 1, #lines do
+		drawCentrizedText(y, colorsText, lines[i])
+		y = y + 1
+	end
+
 	if needWait then
 		while pullSignal() ~= stringsKeyDown do
-
+			-- Wait until the specified key is pressed
 		end
 	end
-end,
+end
 
 function(...)
 	local result, reason = load(...)
