@@ -193,7 +193,7 @@ function(statusText, needWait)
 			-- Wait until the specified key is pressed
 		end
 	end
-end
+end,
 
 function(...)
 	local result, reason = load(...)
