@@ -163,10 +163,12 @@ function(statusText, needWait)
 		["not enough memory"] = {0x00000002,"OUT_OF_MEMORY"}
 	}
 	local iserr = false
+	local errv = nil
 	for i = 1, #lines do
 		for key, value in pairs(errs) do
 			if string.find(lines[i], value[2]) then
 				iserr = true
+				errv = key
 				break
 			end
 		end
@@ -182,15 +184,17 @@ function(statusText, needWait)
 	end
 
 	-- If no error is detected, proceed with normal display
-	local y = drawTitle(#lines, stringsMineOSEFI)
-	for i = 1, #lines do
-		drawCentrizedText(y, colorsText, lines[i])
-		y = y + 1
-	end
-
-	if needWait then
-		while pullSignal() ~= stringsKeyDown do
-			-- Wait until the specified key is pressed
+	if not iserr then
+		local y = drawTitle(#lines, stringsMineOSEFI)
+		for i = 1, #lines do
+			drawCentrizedText(y, colorsText, lines[i])
+			y = y + 1
+		end
+	
+		if needWait then
+			while pullSignal() ~= stringsKeyDown do
+				-- Wait until the specified key is pressed
+			end
 		end
 	end
 end,
