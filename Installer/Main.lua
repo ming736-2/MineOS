@@ -15,7 +15,7 @@ local screenWidth, screenHeight = component.invoke(GPUAddress, "getResolution")
 
 local repositoryURL = "https://raw.githubusercontent.com/ming736-2/MineOS/master/"
 local installerURL = "Installer/"
-local EFIURL = "EFI/Minified.lua"
+local EFIURL = "EFI/Full.lua"
 
 local installerPath = "/MineOS installer/"
 local installerPicturesPath = installerPath .. "Installer/Pictures/"
