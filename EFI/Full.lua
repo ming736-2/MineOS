@@ -154,7 +154,7 @@ end,
 function(statusText, needWait)
 	local lines = {}
 
-	for line in statusText:gmatch("[^\r\n]+") do
+	for line in statusText:gmatch("[^\n]+") do
 		lines[#lines + 1] = line:gsub("\t", "  ")
 	end
 	
