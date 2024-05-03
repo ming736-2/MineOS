@@ -342,6 +342,8 @@ event.addHandler(
 system.authorize()
 
 -- Main loop with UI regeneration after errors 
+_G.workspace = workspace
+_G.system = system
 while true do
 	local success, path, line, traceback = system.call(workspace.start, workspace, 0)
 	
