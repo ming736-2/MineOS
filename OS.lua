@@ -110,6 +110,9 @@ function error(...)
     local function gpuSet(...)
         return component.invoke(GPUAddress, "set", table.unpack({...}))
     end
+	local function gpuFill(...)
+        return component.invoke(GPUAddress, "fill", table.unpack({...}))
+    end
 
     local function gpuSetBackground(...)
         return component.invoke(GPUAddress, "setBackground", table.unpack({...}))
@@ -123,6 +126,10 @@ function error(...)
     local function drawCentrizedText(y, foreground, text)
         drawText(math.floor(screenWidth / 2 - #text / 2), y, foreground, text)
     end
+	local function drawRectangle(x, y, width, height, color)
+		gpuSetBackground(color)
+		gpuFill(x, y, width, height, " ")
+	end
 
     local function drawTitle(y, title)
         y = math.floor(screenHeight / 2 - y / 2)
