@@ -152,53 +152,60 @@ function(y, title)
 end,
 
 function(statusText, needWait)
-	local lines = {}
+    local lines = {}
 
-	for line in statusText:gmatch("[^\n]+") do
-		lines[#lines + 1] = line:gsub("\t", "  ")
-	end
-	
-	local errs = {
-		["no such component"] = {0x00000001,"NO_SUCH_COMPONENT"},
-		["not enough memory"] = {0x00000002,"OUT_OF_MEMORY"},
-		["No boot sources found"] = {0x00000003,"INACCESSIBLE_BOOT_DEVICE"}
-	}
-	local iserr = false
-	local errv = nil
-	for i = 1, #lines do
-		for key, value in pairs(errs) do
-			if string.find(lines[i], value[2]) then
-				iserr = true
-				errv = key
-				break
-			end
-		end
-		if iserr then 
-			gpuSetBackground(0x0004ff)
-			local y = drawTitle(#lines, "An error has occurred")
-			for j = 1, #lines do
-				drawCentrizedText(y, 0xffffff, lines[j])
-				y = y + 1
-			end
-			return  -- Exit the function immediately after handling error
-		end
-	end
+    -- Split `statusText` into lines and replace tabs with spaces
+    for line in statusText:gmatch("[^\n]+") do
+        lines[#lines + 1] = line:gsub("\t", "  ")
+    end
 
-	-- If no error is detected, proceed with normal display
-	if not iserr then
-		local y = drawTitle(#lines, stringsMineOSEFI)
-		for i = 1, #lines do
-			drawCentrizedText(y, colorsText, lines[i])
-			y = y + 1
-		end
-	
-		if needWait then
-			while pullSignal() ~= stringsKeyDown do
-				-- Wait until the specified key is pressed
-			end
-		end
-	end
-end,
+    -- Define error mappings
+    local errs = {
+        ["NO_SUCH_COMPONENT"] = {"no such component", 0x00000001},
+        ["OUT_OF_MEMORY"] = {"not enough memory", 0x00000002},
+        ["INACCESSIBLE_BOOT_DEVICE"] = {"No boot sources found", 0x00000003}
+    }
+
+    -- Check for errors in each line
+    local iserr = false
+    local errv = nil
+
+    for i = 1, #lines do
+        for key, value in pairs(errs) do
+            if string.find(lines[i], value[1]) then
+                iserr = true
+                errv = key
+                break
+            end
+        end
+        if iserr then
+            -- Handle error display
+            gpuSetBackground(value[2])  -- Set background color based on error type
+            local y = drawTitle(#lines, "An error has occurred")
+            for j = 1, #lines do
+                drawCentrizedText(y, 0xffffff, lines[j])
+                y = y + 1
+            end
+            return  -- Exit the function immediately after handling error
+        end
+    end
+
+    -- If no error is detected, proceed with normal display
+    if not iserr then
+        local y = drawTitle(#lines, stringsMineOSEFI)
+        for i = 1, #lines do
+            drawCentrizedText(y, colorsText, lines[i])
+            y = y + 1
+        end
+
+        -- Optionally wait for a key press if `needWait` is true
+        if needWait then
+            while pullSignal() ~= stringsKeyDown do
+                -- Wait until the specified key is pressed
+            end
+        end
+    end
+end
 
 function(...)
 	local result, reason = load(...)
