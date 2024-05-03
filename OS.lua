@@ -172,6 +172,9 @@ function error(...)
 		["LUA_UNFINISHED_DEFINITION"] = {
             {"to close", 0x00000008}
         },
+		["DEBUG_RUNLEVEL_NOT_FOUND"] = {
+			{"Failed to get debug info for runlevel ", 0x00000009}
+		}
     }
 
     -- Check for errors in each line
@@ -203,11 +206,7 @@ function error(...)
 
     -- If no error is detected, proceed with normal display
     if not isError then
-        local y = drawTitle(#lines, "Error") -- Example title
-        for i = 1, #lines do
-            drawCentrizedText(y, colorsText, lines[i]) -- Assuming draw function exists
-            y = y + 1
-        end
+        system.error("Kernel","0",debug.traceback())
     else
 		hasErrored = true
 		while computer.pullSignal() ~= "keydown" do
