@@ -353,6 +353,7 @@ while true do
 		
 		system.error(path, line, traceback)
 		workspace:draw()--]]
+		workspace:stop()
 		error(traceback)
 		break
 	end
