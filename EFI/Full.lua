@@ -163,7 +163,9 @@ function(statusText, needWait)
     local errs = {
         ["NO_SUCH_COMPONENT"] = {"no such component", 0x00000001},
         ["OUT_OF_MEMORY"] = {"not enough memory", 0x00000002},
-        ["INACCESSIBLE_BOOT_DEVICE"] = {"No boot sources found", 0x00000003}
+        ["INACCESSIBLE_BOOT_DEVICE"] = {"No boot sources found", 0x00000003},
+		["HTTP_CONNECTION_FAILED"] = {"failed to fetch",0x00000004},
+		["RECOVERY_FAILED"] = {"recovery failed: no internet card",0x00000005}
     }
 
     -- Check for errors in each line
@@ -355,7 +357,8 @@ function(title, prefix)
 end,
 
 function(url)
-	local
+	local s,e = pcall(function()
+		local
 		connection,
 		data,
 		result,
@@ -386,6 +389,16 @@ function(url)
 		end
 	else
 		status("Invalid URL", 1)
+	end
+	end)
+	if not s then
+		if string.find(e,"attempt to index a nil value") then
+			status("recovery failed: no internet card")
+		else
+			status("failed to fetch")
+		end
+	else
+		return e
 	end
 end
 
