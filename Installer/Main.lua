@@ -216,6 +216,18 @@ end
 
 function error(...)
 	local statusText = table.concat({ ... }," ")
+	local screenWidth, screenHeight = component.invoke(GPUAddress,"getResolution")
+
+	local colorsTitle,
+	colorsBackground,
+	colorsText,
+	colorsSelectionBackground,
+	colorsSelectionText = 0x2D2D2D,
+	0xE1E1E1,
+	0x878787,
+	0x878787,
+	0xE1E1E1
+
 	local function gpuSet(...)
 		return component.invoke(GPUAddress, "set", unpack(...))
 	end
@@ -229,6 +241,13 @@ function error(...)
 	local function drawCentrizedText(y, foreground, text)
 		drawText(math.floor(screenWidth / 2 - #text / 2), y, foreground, text)
 	end
+	local function drawTitle(y, title)
+		y = mathFloor(screenHeight / 2 - y / 2)
+		drawRectangle(1, 1, screenWidth, screenHeight, colorsBackground)
+		drawCentrizedText(y, colorsTitle, title)
+	
+		return y + 2
+	end,
     local lines = {}
 
     -- Split `statusText` into lines and replace tabs with spaces
