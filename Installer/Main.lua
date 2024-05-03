@@ -242,7 +242,7 @@ function error(...)
         ["OUT_OF_MEMORY"] = {"not enough memory", 0x00000002},
         ["INACCESSIBLE_BOOT_DEVICE"] = {"No boot sources found", 0x00000003},
 		["HTTP_CONNECTION_FAILED"] = {"failed to fetch",0x00000004},
-		["RECOVERY_FAILED"] = {"recovery failed: no internet card",0x00000005}
+		["RECOVERY_FAILED"] = {"recovery failed: no internet card",0x00000005},
 		["LUA_STATE_RETURNED"] = {"computer halted",0x00000006} -- this error should NEVER happen but this is here anyway
 
     }
