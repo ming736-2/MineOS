@@ -160,7 +160,8 @@ function(statusText, needWait)
 	
 	local errs = {
 		["no such component"] = {0x00000001,"NO_SUCH_COMPONENT"},
-		["not enough memory"] = {0x00000002,"OUT_OF_MEMORY"}
+		["not enough memory"] = {0x00000002,"OUT_OF_MEMORY"},
+		["No boot sources found"] = {0x00000003,"INACCESSIBLE_BOOT_DEVICE"}
 	}
 	local iserr = false
 	local errv = nil
@@ -505,7 +506,7 @@ if not (bootProxy and boot(bootProxy)) then
 		end
 
 		if not bootProxy then
-			status("Not boot sources found")
+			status("No boot sources found")
 		end
 	end
 
