@@ -174,7 +174,7 @@ function(statusText, needWait)
         for key, value in pairs(errs) do
             if string.find(lines[i], value[1]) then
                 isError = true
-                errorCode = value
+                errorCode = {key,value[1],value[2]}
                 break
             end
         end
@@ -183,7 +183,7 @@ function(statusText, needWait)
             gpuSetBackground(0x0000FF)  -- Set background color to blue
             local y = drawTitle(#lines, "An error has occurred")
             for j = 1, #lines do
-                drawCentrizedText(y, 0x000000, errorCode[1].." ("..string.format("%02X", errorCode[2])..")")
+                drawCentrizedText(y, 0x000000, errorCode[2].." ("..string.format("%02X", errorCode[3])..")")
                 y = y + 1
             end
             return  -- Exit the function immediately after handling error
