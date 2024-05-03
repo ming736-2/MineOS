@@ -247,7 +247,7 @@ function error(...)
 		drawCentrizedText(y, colorsTitle, title)
 	
 		return y + 2
-	end,
+	end
     local lines = {}
 
     -- Split `statusText` into lines and replace tabs with spaces
