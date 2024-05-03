@@ -167,23 +167,23 @@ function(statusText, needWait)
     }
 
     -- Check for errors in each line
-    local iserr = false
-    local errv = nil
+    local isError = false
+    local errorCode = nil
 
     for i = 1, #lines do
         for key, value in pairs(errs) do
             if string.find(lines[i], value[1]) then
-                iserr = true
-                errv = key
+                isError = true
+                errorCode = value[2]
                 break
             end
         end
-        if iserr then
-            -- Handle error display
-            gpuSetBackground(value[2])  -- Set background color based on error type
+        if isError then
+            -- Handle error display with blue background
+            gpuSetBackground(0x0000FF)  -- Set background color to blue
             local y = drawTitle(#lines, "An error has occurred")
             for j = 1, #lines do
-                drawCentrizedText(y, 0xffffff, lines[j])
+                drawCentrizedText(y, 0xFFFFFF, lines[j])  -- White text color
                 y = y + 1
             end
             return  -- Exit the function immediately after handling error
@@ -191,10 +191,10 @@ function(statusText, needWait)
     end
 
     -- If no error is detected, proceed with normal display
-    if not iserr then
-        local y = drawTitle(#lines, stringsMineOSEFI)
+    if not isError then
+        local y = drawTitle(#lines, "Normal Display") -- Example title
         for i = 1, #lines do
-            drawCentrizedText(y, colorsText, lines[i])
+            drawCentrizedText(y, colorsText, lines[i]) -- Assuming draw function exists
             y = y + 1
         end
 
