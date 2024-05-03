@@ -152,7 +152,7 @@ function error(...)
         },
         ["OUT_OF_MEMORY"] = {
             {"not enough memory", 0x00000002},
-            {"Out of memory", 0x00000002} -- Example of another message mapped to the same error
+            {"Out of memory", 0x00000002}
         },
         ["INACCESSIBLE_BOOT_DEVICE"] = {
             {"No boot sources found", 0x00000003}
@@ -164,7 +164,7 @@ function error(...)
             {"recovery failed: no internet card", 0x00000005}
         },
         ["LUA_STATE_RETURNED"] = {
-            {"computer halted", 0x00000006}
+            {"computer halted", 0x00000006} -- this shouldn't appear via this function, but is here just in case
         },
 		["LUA_NIL_INDEX"] = {
             {"attempt to index a nil value", 0x00000007}
@@ -174,6 +174,30 @@ function error(...)
         },
 		["DEBUG_RUNLEVEL_NOT_FOUND"] = {
 			{"Failed to get debug info for runlevel ", 0x00000009}
+		},
+		["RENDERER_SEGMENT_UNKNOWN"] = {
+			{"Че за говно ты сюда напихал? Переделывай!", 0x0000000A}
+		},
+		["JSON_CIRCULAR_REFERENCE"] = {
+			{"circular reference",0x0000000B}
+		},
+		["DRIVE_MOUNT_FAILED"] = {
+			{"bad argument #1 (filesystem proxy expected, got ",0x0000000C},
+		},
+		["DRIVE_UNMOUNT_FAILED"] = {
+			{"bad argument #1 (filesystem proxy or mounted path expected, got ",0x0000000D}
+		},
+		["OCGL_UNSUPPORTED_TRIANGLE_RENDER"] = {
+			{" doesn't supported for rendering triangles",0x0000000E}
+		},
+		["CALL_LOADED_MODULE_FAILED"] = {
+			{"Failed to call loaded module",0x0000000F}
+		},
+		["CALL_MODULE_FAILED"] = {
+			{"Failed to load module ",0x00000010}
+		},
+		["EXECUTE_MODULE_FAILED"] = {
+			{"Failed to execute module ",0x00000010}
 		}
     }
 
