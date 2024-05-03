@@ -197,7 +197,6 @@ function error(...)
                     drawCentrizedText(y, 0x000000, errorCode[1] .. " (" .. string.format("%02X", errorCode[3]) .. ")")
                     y = y + 1
                 end
-                return -- Exit the function immediately after handling error
             end
         end
     end
