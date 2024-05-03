@@ -48,7 +48,7 @@ function error(...)
         ["INACCESSIBLE_BOOT_DEVICE"] = {"No boot sources found", 0x00000003},
 		["HTTP_CONNECTION_FAILED"] = {"failed to fetch",0x00000004},
 		["RECOVERY_FAILED"] = {"recovery failed: no internet card",0x00000005},
-		["LUA_STATE_RETURNED"] = {"computer halted",0x00000006} -- this error should NEVER happen but this is here anyway
+		["LUA_STATE_RETURNED"] = {"computer halted",0x00000006}, -- this error should NEVER happen but this is here anyway
 		["LUA_INVALID_CHARACTER"] = {"unexpected symbol near",0x00000007}
     }
 
