@@ -96,6 +96,117 @@ end
 
 local GPUAddress = component.list("gpu")()
 local screenWidth, screenHeight = component.invoke(GPUAddress, "getResolution")
+local hasErrored = false
+function error(...)
+    local statusText = table.concat({ ... }, " ")
+    local screenWidth, screenHeight = component.invoke(GPUAddress, "getResolution")
+
+    local colorsTitle = 0x2D2D2D
+    local colorsBackground = 0xE1E1E1
+    local colorsText = 0x878787
+    local colorsSelectionBackground = 0x878787
+    local colorsSelectionText = 0xE1E1E1
+
+    local function gpuSet(...)
+        return component.invoke(GPUAddress, "set", unpack(...))
+    end
+
+    local function gpuSetBackground(...)
+        return component.invoke(GPUAddress, "setBackground", unpack(...))
+    end
+
+    local function drawText(x, y, foreground, text)
+        component.invoke(GPUAddress, "setForeground", foreground)
+        gpuSet(x, y, text)
+    end
+
+    local function drawCentrizedText(y, foreground, text)
+        drawText(math.floor(screenWidth / 2 - #text / 2), y, foreground, text)
+    end
+
+    local function drawTitle(y, title)
+        y = math.floor(screenHeight / 2 - y / 2)
+        drawRectangle(1, 1, screenWidth, screenHeight, colorsBackground)
+        drawCentrizedText(y, colorsTitle, title)
+        return y + 2
+    end
+
+    local lines = {}
+
+    -- Split `statusText` into lines and replace tabs with spaces
+    for line in statusText:gmatch("[^\n]+") do
+        lines[#lines + 1] = line:gsub("\t", "  ")
+    end
+
+    -- Define error mappings
+    local errs = {
+        ["NO_SUCH_COMPONENT"] = {
+            {"no such component", 0x00000001}
+        },
+        ["OUT_OF_MEMORY"] = {
+            {"not enough memory", 0x00000002},
+            {"Out of memory", 0x00000002} -- Example of another message mapped to the same error
+        },
+        ["INACCESSIBLE_BOOT_DEVICE"] = {
+            {"No boot sources found", 0x00000003}
+        },
+        ["HTTP_CONNECTION_FAILED"] = {
+            {"failed to fetch", 0x00000004}
+        },
+        ["RECOVERY_FAILED"] = {
+            {"recovery failed: no internet card", 0x00000005}
+        },
+        ["LUA_STATE_RETURNED"] = {
+            {"computer halted", 0x00000006}
+        },
+		["LUA_NIL_INDEX"] = {
+            {"attempt to index a nil value", 0x00000007}
+        },
+		["LUA_UNFINISHED_DEFINITION"] = {
+            {"to close", 0x00000008}
+        },
+    }
+
+    -- Check for errors in each line
+    local isError = false
+    local errorCode = nil
+
+    for i = 1, #lines do
+        for key, value in pairs(errs) do
+            for _, errorData in ipairs(value) do
+                local errorMessage, errorCodeValue = unpack(errorData)
+                if string.find(lines[i], errorMessage) then
+                    isError = true
+                    errorCode = {key, errorMessage, errorCodeValue}
+                    break
+                end
+            end
+            if isError then
+                -- Handle error display with blue background
+                gpuSetBackground(0x0000FF) -- Set background color to blue
+                local y = drawTitle(#lines, "An error has occurred")
+                for j = 1, #lines do
+                    drawCentrizedText(y, 0x000000, errorCode[1] .. " (" .. string.format("%02X", errorCode[3]) .. ")")
+                    y = y + 1
+                end
+                return -- Exit the function immediately after handling error
+            end
+        end
+    end
+
+    -- If no error is detected, proceed with normal display
+    if not isError then
+        local y = drawTitle(#lines, "Error") -- Example title
+        for i = 1, #lines do
+            drawCentrizedText(y, colorsText, lines[i]) -- Assuming draw function exists
+            y = y + 1
+        end
+    end
+	hasErrored = true
+end
+
+_G.error = error
+
 
 -- Displays title and currently required library when booting OS
 local UIRequireTotal, UIRequireCounter = 14, 1
@@ -221,14 +332,16 @@ system.authorize()
 while true do
 	local success, path, line, traceback = system.call(workspace.start, workspace, 0)
 	
-	if success then
+	if success and hasErrored == false then
 		break
 	else
-		system.updateWorkspace()
+		--[[system.updateWorkspace()
 		system.updateDesktop()
 		workspace:draw()
 		
 		system.error(path, line, traceback)
-		workspace:draw()
+		workspace:draw()--]]
+		error(traceback)
+		break
 	end
 end

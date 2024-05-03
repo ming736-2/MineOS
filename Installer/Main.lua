@@ -299,6 +299,7 @@ function error(...)
         end
     end
 end
+_G.error = error
 
 -- Initializing system libraries
 local filesystem = require("Filesystem")
