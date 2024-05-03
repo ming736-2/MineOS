@@ -190,6 +190,7 @@ function error(...)
             end
             if isError then
                 -- Handle error display with blue background
+				workspace:stop()
                 gpuSetBackground(0x0000FF) -- Set background color to blue
                 local y = drawTitle(#lines, "An error has occurred")
                 for j = 1, #lines do
@@ -353,7 +354,6 @@ while true do
 		
 		system.error(path, line, traceback)
 		workspace:draw()--]]
-		workspace:stop()
 		error(traceback)
 		break
 	end
