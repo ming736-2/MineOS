@@ -205,7 +205,7 @@ function(statusText, needWait)
             end
         end
     end
-end
+end,
 
 function(...)
 	local result, reason = load(...)
