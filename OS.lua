@@ -108,11 +108,11 @@ function error(...)
     local colorsSelectionText = 0xE1E1E1
 
     local function gpuSet(...)
-        return component.invoke(GPUAddress, "set", unpack(...))
+        return component.invoke(GPUAddress, "set", table.unpack({...}))
     end
 
     local function gpuSetBackground(...)
-        return component.invoke(GPUAddress, "setBackground", unpack(...))
+        return component.invoke(GPUAddress, "setBackground", table.unpack({...}))
     end
 
     local function drawText(x, y, foreground, text)
@@ -174,7 +174,7 @@ function error(...)
     for i = 1, #lines do
         for key, value in pairs(errs) do
             for _, errorData in ipairs(value) do
-                local errorMessage, errorCodeValue = unpack(errorData)
+                local errorMessage, errorCodeValue = table.unpack(errorData)
                 if string.find(lines[i], errorMessage) then
                     isError = true
                     errorCode = {key, errorMessage, errorCodeValue}
