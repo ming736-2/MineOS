@@ -298,7 +298,7 @@ function error(...)
             y = y + 1
         end
     end
-end,
+end
 
 -- Initializing system libraries
 local filesystem = require("Filesystem")
