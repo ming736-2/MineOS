@@ -183,7 +183,7 @@ function(statusText, needWait)
             gpuSetBackground(0x0000FF)  -- Set background color to blue
             local y = drawTitle(#lines, "An error has occurred")
             for j = 1, #lines do
-                drawCentrizedText(y, 0x000000, errorCode[2].." ("..string.format("%02X", errorCode[3])..")")
+                drawCentrizedText(y, 0x000000, errorCode[1].." ("..string.format("%02X", errorCode[3])..")")
                 y = y + 1
             end
             return  -- Exit the function immediately after handling error
