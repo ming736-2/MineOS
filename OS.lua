@@ -201,8 +201,13 @@ function error(...)
             drawCentrizedText(y, colorsText, lines[i]) -- Assuming draw function exists
             y = y + 1
         end
-    end
-	hasErrored = true
+    else
+		hasErrored = true
+		while computer.pullSignal() ~= "keydown" do
+			-- Wait until the specified key is pressed
+		end
+		computer.shutdown(true)
+	end
 end
 
 _G.error = error
