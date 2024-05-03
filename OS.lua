@@ -101,11 +101,11 @@ function error(...)
     local statusText = table.concat({ ... }, " ")
     local screenWidth, screenHeight = component.invoke(GPUAddress, "getResolution")
 
-    local colorsTitle = 0x2D2D2D
-    local colorsBackground = 0xE1E1E1
-    local colorsText = 0x878787
-    local colorsSelectionBackground = 0x878787
-    local colorsSelectionText = 0xE1E1E1
+    local colorsTitle = 0xFFFFFF
+    local colorsBackground = 0x0000FF
+    local colorsText = 0xFFFFFF
+    local colorsSelectionBackground = 0x0000FF
+    local colorsSelectionText = 0xFFFFFF
 
     local function gpuSet(...)
         return component.invoke(GPUAddress, "set", table.unpack({...}))
@@ -197,7 +197,7 @@ function error(...)
 			{"Failed to load module ",0x00000010}
 		},
 		["EXECUTE_MODULE_FAILED"] = {
-			{"Failed to execute module ",0x00000010}
+			{"Failed to execute module ",0x00000011}
 		}
     }
 
