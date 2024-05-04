@@ -218,7 +218,9 @@ function error(...)
             end
 			if isError then
 				-- Handle error display with blue background
-				workspace:stop()
+				if workspace then
+					workspace:stop()
+				end
 				gpuSetBackground(0x0000FF) -- Set background color to blue
 				drawRectangle(1, 1, screenWidth, screenHeight, 0x0000FF)
 				drawText(1, 1, 0xFFFFFF, "A problem was detected, and MineOS has shut down to prevent damage.")
