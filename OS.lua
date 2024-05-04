@@ -220,10 +220,8 @@ function error(...)
 				workspace:stop()
                 gpuSetBackground(0x0000FF) -- Set background color to blue
                 local y = drawTitle(#lines, "An error has occurred")
-                for j = 1, #lines do
-                    drawCentrizedText(y, 0xFFFFFF, errorCode[1] .. " (" .. string.format("%02X", errorCode[3]) .. ")")
-                    y = y + 1
-                end
+                drawCentrizedText(y, 0xFFFFFF, errorCode[1] .. " (" .. string.format("%02X", errorCode[3]) .. ")")
+                y = y + 1
             end
         end
     end
