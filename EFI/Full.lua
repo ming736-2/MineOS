@@ -161,11 +161,11 @@ function(statusText, needWait)
 
     -- Define error mappings
     local errs = {
-        ["NO_SUCH_COMPONENT"] = {"no such component", 0x00000001},
-        ["OUT_OF_MEMORY"] = {"not enough memory", 0x00000002},
-        ["INACCESSIBLE_BOOT_DEVICE"] = {"No boot sources found", 0x00000003},
-		["HTTP_CONNECTION_FAILED"] = {"failed to fetch",0x00000004},
-		["RECOVERY_FAILED"] = {"recovery failed: no internet card",0x00000005}
+        ["Attempted to get a non-mounted component."] = {"no such component", 0x00000001},
+        ["Not enough memory was found in the system."] = {"not enough memory", 0x00000002},
+        ["No boot device was found. Please insert a disk containing an operating system."] = {"No boot sources found", 0x00000003},
+		["URL boot failed: failed to fetch"] = {"failed to fetch",0x00000004},
+		["Recovery failed: No internet card detected"] = {"recovery failed: no internet card",0x00000005}
     }
 
     -- Check for errors in each line
