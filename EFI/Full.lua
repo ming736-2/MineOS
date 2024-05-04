@@ -165,7 +165,8 @@ function(statusText, needWait)
         ["Not enough memory was found in the system."] = {"not enough memory", 0x00000002},
         ["No boot device was found. Please insert a disk containing an operating system."] = {"No boot sources found", 0x00000003},
 		["URL boot failed: failed to fetch"] = {"failed to fetch",0x00000004},
-		["Recovery failed: No internet card detected"] = {"recovery failed: no internet card",0x00000005}
+		["Recovery failed: No internet card detected"] = {"recovery failed: no internet card",0x00000005},
+		["Drive mount failure occurred"] = {"bad argument #1 (filesystem proxy expected, got",0x00000006}
     }
 
     -- Check for errors in each line
