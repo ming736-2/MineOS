@@ -97,6 +97,7 @@ end
 local GPUAddress = component.list("gpu")()
 local screenWidth, screenHeight = component.invoke(GPUAddress, "getResolution")
 local hasErrored = false
+local oError = error
 function error(...)
     local statusText = table.concat({ ... }, " ")
     local screenWidth, screenHeight = component.invoke(GPUAddress, "getResolution")
@@ -173,7 +174,7 @@ function error(...)
             {"to close", 0x00000008}
         },
 		["DEBUG_RUNLEVEL_NOT_FOUND"] = {
-			{"Failed to get debug info for runlevel ", 0x00000009}
+			{"Failed to get debug info for runlevel", 0x00000009}
 		},
 		["RENDERER_SEGMENT_UNKNOWN"] = {
 			{"Че за говно ты сюда напихал? Переделывай!", 0x0000000A}
@@ -182,10 +183,10 @@ function error(...)
 			{"circular reference",0x0000000B}
 		},
 		["DRIVE_MOUNT_FAILED"] = {
-			{"bad argument #1 (filesystem proxy expected, got ",0x0000000C},
+			{"bad argument #1 (filesystem proxy expected, got",0x0000000C},
 		},
 		["DRIVE_UNMOUNT_FAILED"] = {
-			{"bad argument #1 (filesystem proxy or mounted path expected, got ",0x0000000D}
+			{"bad argument #1 (filesystem proxy or mounted path expected, got",0x0000000D}
 		},
 		["OCGL_UNSUPPORTED_TRIANGLE_RENDER"] = {
 			{" doesn't supported for rendering triangles",0x0000000E}
@@ -194,10 +195,10 @@ function error(...)
 			{"Failed to call loaded module",0x0000000F}
 		},
 		["CALL_MODULE_FAILED"] = {
-			{"Failed to load module ",0x00000010}
+			{"Failed to load module",0x00000010}
 		},
 		["EXECUTE_MODULE_FAILED"] = {
-			{"Failed to execute module ",0x00000011}
+			{"Failed to execute module",0x00000011}
 		}
     }
 
@@ -219,16 +220,29 @@ function error(...)
                 -- Handle error display with blue background
 				workspace:stop()
                 gpuSetBackground(0x0000FF) -- Set background color to blue
-                local y = drawTitle(#lines, "An error has occurred")
-                drawCentrizedText(y, 0xFFFFFF, errorCode[1] .. " (" .. string.format("%02X", errorCode[3]) .. ")")
-                y = y + 1
+				drawText(1,1, 0xFFFFFF,"A problem was detected, and MineOS has shut down to prevent damage.")
+				drawText(1,2,0xFFFFFF,"If this is the first time this has happened, restart your computer.")
+				drawText(1,3,0xFFFFFF,"If this isn't the first time, then:")
+				drawText(1,5,0xFFFFFF,"Check your firmware for recent updates. Try downgrading to an older version.")
+				drawText(1,7,0xFFFFFF,"Try downgrading software you recently updated.")
+				drawText(1,10,0xFFFFFF,"Technical information:")
+                drawText(1,11, 0xFFFFFF, "Stop code: "..errorCode[1] .. " (" .. string.format("%02X", errorCode[3]) .. ")")
+				drawText(1,12, 0xFFFFFF, "Traceback:")
+				local traceback = debug.traceback()
+				local lines = {}
+				for line in traceback:gmatch("[^\n]+") do
+					lines[#lines + 1] = line:gsub("\t", "  ")
+				end
+				for y,t in ipairs(lines) do
+					drawText(1,12+y,0xFFFFFF,t)
+				end
             end
         end
     end
 
     -- If no error is detected, proceed with normal display
     if not isError then
-        system.error("Kernel","0",debug.traceback())
+        oError(table.unpack({...}))
     else
 		hasErrored = true
 		while computer.pullSignal() ~= "keydown" do
